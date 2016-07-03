@@ -1,0 +1,32 @@
+makeCacheMatrix <- function(x = matrix()) {
+        inversemat<-NULL
+        set<-function(y){
+                x<<-y
+                inversemat<<-NULL
+        }
+        get<-function() x
+        setinverse<-function(solve) inversemat<<-solve
+        getinverse<- function() inversemat
+        list(set=set,get=get,setinverse=setinverse,getinverse=getinverse)
+}
+
+
+## makeCacheMatrix function creates a special "vector", which is really a list containing a function to
+
+## 1. set the value of the vector
+## 2. get the value of the vector
+## 3. set the value of the mean
+## 4. get the value of the mean
+
+cacheSolve <- function(x, ...) {
+        inversemat<-x$getinverse()
+        if(!is.null(inversemat)){
+                message("getting cached data")
+                return(inversemat)
+        }
+        data<-x$get()
+        inversemat<-solve(data,...)
+        x$setinverse(inversemat)
+        inversemat
+        ## Return a matrix that is the inverse of 'x'
+}
